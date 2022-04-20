@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel Orientation="Horizontal" Margin="0,0,717,385">
+            <Button Content="Press me" Command= "{Binding ButtomClick}" Height="26" Width="80"/>
+        </StackPanel>
     </Grid>
 </Window>
