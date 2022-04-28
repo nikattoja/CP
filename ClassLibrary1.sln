@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "View\View.csproj", "{BF7132CA-274A-4DF7-B8C8-FA520843BCAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "ClassLibrary1\ClassLibrary1\View\View.csproj", "{BF7132CA-274A-4DF7-B8C8-FA520843BCAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{431D49DB-04B1-40D7-A357-52442130B32E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ClassLibrary1\ClassLibrary1\ViewModel\ViewModel.csproj", "{431D49DB-04B1-40D7-A357-52442130B32E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{F208C4F5-E01C-41F7-8C38-1A35B4131D23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "ClassLibrary1\ClassLibrary1\Model\Model.csproj", "{F208C4F5-E01C-41F7-8C38-1A35B4131D23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logika\Logic.csproj", "{81991543-D961-470B-AD89-902367DA8029}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "ClassLibrary1\ClassLibrary1\Logika\Logic.csproj", "{81991543-D961-470B-AD89-902367DA8029}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dane", "Dane\Dane.csproj", "{1A22888F-89BE-4915-ABF7-A56191E289AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dane", "ClassLibrary1\ClassLibrary1\Dane\Dane.csproj", "{1A22888F-89BE-4915-ABF7-A56191E289AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaneTest", "DaneTest\DaneTest.csproj", "{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaneTest", "ClassLibrary1\ClassLibrary1\DaneTest\DaneTest.csproj", "{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{5E4521C2-E004-4A12-A9B7-9021422F75DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicTest", "ClassLibrary1\ClassLibrary1\LogicTest\LogicTest.csproj", "{5E4521C2-E004-4A12-A9B7-9021422F75DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
