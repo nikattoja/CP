@@ -1,22 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Numerics;
 
-namespace Logika
+namespace TPW.Logika
 {
-    public class Ball
+    public interface IBall
     {
-        double width;
-        double height;
-        double ballXPosition;
-        double ballYPosition;
-
-        public Ball(double width, double height, double ballXPosition, double ballYPosition)
-        {
-            this.width = width;
-            this.height = height;
-            this.ballXPosition = ballXPosition;
-            this.ballYPosition = ballYPosition;
-        }
+        Vector2 Position { get; set; }
+        Vector2 Velocity { get; set; }
     }
+
+    internal class Ball : IBall
+    {
+        public Vector2 Position { get; set; }
+        public Vector2 Velocity { get; set; }
+
+        public Ball(Vector2 position, Vector2 Velocity)
+        {
+            this.Position = position;
+            this.Velocity = Velocity;
+        }
+        public override string ToString()
+		{
+			return $"({Position.X}, {Position.Y})";
+		}
+	}
 }
