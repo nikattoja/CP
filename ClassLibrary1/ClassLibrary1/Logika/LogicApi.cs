@@ -26,10 +26,7 @@ public abstract class LogicApi
 	{
 		return new BallsList();
 	}
-         //public static LogicApi CreateLayer(LogicApi logicApi, Vector2 boardSize, DaneAPI data = default(DaneAPI))
-       // {
-           // return new BallsLogic(logicApi, boardSize, data == null ? DaneAPI.CreateDataBall() : data);
-       // }
+  
 	public static IBall CreateBall(Vector2 position, Vector2 velocity)
     {
         return new Ball(position,velocity);
@@ -60,7 +57,7 @@ public abstract class LogicApi
             private readonly LogicApi dataBalls;
             public CancellationTokenSource CancelSimulationSource { get; private set; }
 
-            public BallsLogic(LogicApi dataBalls, Vector2 boardSize,DaneAPI daneAPI)//, DaneAPI daneAPI)
+            public BallsLogic(LogicApi dataBalls, Vector2 boardSize,DaneAPI daneAPI)
             {
                 this.daneAPI = daneAPI;
                 this.dataBalls = dataBalls;
@@ -108,7 +105,7 @@ public abstract class LogicApi
                 
                 for (var i = 0; i < dataBalls.GetBallCount(); i++)
                 {
-                    var ball = new LogicBallDecorator(dataBalls.Get(i), i, this);
+                    var ball = new BallPosition(dataBalls.Get(i), i, this);
                     ball.PositionChange += (_, args) => OnPositionChange(args);
                     Task.Factory.StartNew(ball.Simulate, CancelSimulationSource.Token);
                 }
@@ -122,15 +119,13 @@ public abstract class LogicApi
             {
                 throw new NotImplementedException();
             }
-
-            public override IBall Get(int index)
-            {
-                throw new NotImplementedException();
-            }
-
             public override int GetBallCount()
             {
                 return dataBalls.GetBallCount();
+            }
+            public override IBall Get(int index)
+            {
+                return dataBalls.Get(index);
             }
         }
     }

@@ -13,14 +13,14 @@ public interface ILogicBall
 	int Id { get; }
 }
 
-internal class LogicBallDecorator : ILogicBall
+internal class BallPosition : ILogicBall
 {
 	private readonly IBall ball;
 	private readonly BallsLogic owner;
 	public event EventHandler<OnPositionChangeEventArgs> PositionChange;
 	public int Id { get; private set; }
 
-	public LogicBallDecorator(IBall ball, int id, BallsLogic owner)
+	public BallPosition(IBall ball, int id, BallsLogic owner)
 	{
 		this.ball = ball;
 		this.owner = owner;
