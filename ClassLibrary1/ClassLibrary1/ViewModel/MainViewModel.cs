@@ -66,9 +66,7 @@ namespace TPW.Presentation.ViewModel
         {
             Circles = new AsyncObservableCollection<BallPosition>();
 
-            //model = new MainModel();
             BallsCount = 5;
-
 
             StartSimulationButton = new RelayCommand(() =>
             {

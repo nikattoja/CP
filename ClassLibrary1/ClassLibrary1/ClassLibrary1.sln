@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logika\Logic.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dane", "Dane\Dane.csproj", "{1A22888F-89BE-4915-ABF7-A56191E289AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaneTest", "DaneTest\DaneTest.csproj", "{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{5E4521C2-E004-4A12-A9B7-9021422F75DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{1A22888F-89BE-4915-ABF7-A56191E289AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A22888F-89BE-4915-ABF7-A56191E289AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A22888F-89BE-4915-ABF7-A56191E289AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA37E35-1FC6-4DFF-BADB-F940B4A0E98B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E4521C2-E004-4A12-A9B7-9021422F75DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4521C2-E004-4A12-A9B7-9021422F75DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4521C2-E004-4A12-A9B7-9021422F75DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4521C2-E004-4A12-A9B7-9021422F75DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
