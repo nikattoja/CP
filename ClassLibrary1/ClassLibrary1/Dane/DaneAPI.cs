@@ -19,6 +19,8 @@ namespace TPW.Dane
         public abstract void CreateBalls(int howMany);
         public abstract List<Ball> GetBallsList();
 
+        public abstract int GetBallsCount();
+
         public abstract void SetBallSpeed(int id, Vector2 velocity);
         public abstract IDisposable Subscribe(IObserver<int> observer);
 
@@ -44,6 +46,10 @@ namespace TPW.Dane
             public override List<Ball> GetBallsList()
             {
                 return ballsList.GetBallsList();
+            }
+            public override int GetBallsCount()
+            {
+                return ballsList.GetBallsList().Count;
             }
 
             public override void CreateBalls(int howMany)
@@ -93,6 +99,8 @@ namespace TPW.Dane
                     observers.Add(observer);
                 return new Unsubscriber(observers, observer);
             }
+
+         
 
             private class Unsubscriber : IDisposable
             {

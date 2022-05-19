@@ -34,12 +34,11 @@ namespace TPW.Logika
             return xDifference * xDifference + yDifference * yDifference;
         }
 
-        public Collisions(double poitionX, double poitionY, double speedX, double speedY, int radious, int mass)
+        public Collisions(Vector2 position, Vector2 velocity, int radious)
         {
-            this.velocity = new Vector2(speedX, speedY);
-            this.position = new Vector2(poitionX, poitionY);
+            this.velocity = position;
+            this.position = velocity;
             this.radious = radious;
-            this.mass = mass;
         }
 
         public bool IsCollision(double otherX, double otherY, double otherRadius, bool mode)
@@ -67,33 +66,14 @@ namespace TPW.Logika
             return false;
         }
 
-        public Vector2[] ImpulseSpeed(double otherX, double otherY, double speedX, double speedY, double otherMass)
+        public Vector2[] ImpulseSpeed(Vector2 first, Vector2 second )
         {
-            Vector2 velocityOther = new Vector2(speedX, speedY);
-            Vector2 positionOther = new Vector2(otherX, otherY);
-
-            double fDistance = Math.Sqrt((position.x - positionOther.x) * (position.x - positionOther.x) + (position.y - positionOther.y) * (position.y - positionOther.y));
-
-            double nx = (positionOther.x - position.x) / fDistance;
-            double ny = (positionOther.y - position.y) / fDistance;
-
-            double tx = -ny;
-            double ty = nx;
-
-            // Dot Product Tangent
-            double dpTan1 = velocity.x * tx + velocity.y * ty;
-            double dpTan2 = velocityOther.x * tx + velocityOther.y * ty;
-
-            // Dot Product Normal
-            double dpNorm1 = velocity.x * nx + velocity.y * ny;
-            double dpNorm2 = velocityOther.x * nx + velocityOther.y * ny;
-
-            // Conservation of momentum in 1D
-            double m1 = (dpNorm1 * (mass - otherMass) + 2.0f * otherMass * dpNorm2) / (mass + otherMass);
-            double m2 = (dpNorm2 * (otherMass - mass) + 2.0f * mass * dpNorm1) / (mass + otherMass);
-
-            return new Vector2[2] { new Vector2(tx * dpTan1 + nx * m1, ty * dpTan1 + ny * m1), new Vector2(tx * dpTan2 + nx * m2, ty * dpTan2 + ny * m2) };
-
+            var firstAfterChange = second;
+            var secondAfterChange = first;
+            Vector2[] vector2tab= new Vector2[2];
+            vector2tab[0] = firstAfterChange;
+            vector2tab[1] = secondAfterChange;
+            return vector2tab;
         }
     }
 }
