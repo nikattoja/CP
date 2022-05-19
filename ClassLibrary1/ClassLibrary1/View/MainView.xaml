@@ -44,7 +44,7 @@
                             <Canvas>
                                 <Ellipse Width="40" Height="40" Fill="red" Stroke="#707070" StrokeThickness="2">
                                     <Ellipse.RenderTransform>
-                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                                        <TranslateTransform X="{Binding Left}" Y="{Binding Top}"/>
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
                             </Canvas>

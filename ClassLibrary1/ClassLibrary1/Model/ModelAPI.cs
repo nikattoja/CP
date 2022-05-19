@@ -5,28 +5,29 @@ using System.Reactive;
 using System.Reactive.Linq;
 using TPW.Logika;
 using TPW.Dane;
+using System.Collections.Generic;
 
 namespace TPW.Presentation.Model
 {
-    public class OnPositionChange : EventArgs
+    public interface IBall : INotifyPropertyChanged
     {
-        public readonly Vector2 Position;
-        public readonly int Id;
-        public OnPositionChange(Vector2 position, int id)
-        {
-            this.Position = position;
-            Id = id;
-        }
+        double Top { get; }
+        double Left { get; }
+        int Diameter { get; }
     }
-    public abstract class ModelAPI
+    public class BallChaneEventArgs : EventArgs
+    {
+        public IBall Ball { get; set; }
+    }
+
+    public abstract class ModelAPI : IObservable<IBall>
     {
         public abstract void StartSimulation();
        // public abstract void StopSimulation();
         public abstract void SetBallNumber(int amount);
         public abstract int GetBallsCount();
-        public abstract void OnBallPositionChange(OnPositionChange args);
-        public abstract event EventHandler<OnPositionChange> BallPositionChange;
 
+        public abstract IDisposable Subscribe(IObserver<IBall> observer);
         public static ModelAPI CreateApi()
         {
             return new MainModel();
@@ -38,23 +39,33 @@ namespace TPW.Presentation.Model
             private readonly Vector2 boardSize;
             private int ballsAmount;
             private LogicApi ballsLogic;
-            private IObservable<EventPattern<OnPositionChange>> eventObservable = null;
-            public override event EventHandler<OnPositionChange> BallPositionChange;
+            public event EventHandler<BallChaneEventArgs> BallChanged;
+            private IObservable<EventPattern<BallChaneEventArgs>> eventObservable = null;
+            private List<BallModel> Balls = new List<BallModel>();
 
             public MainModel()
             {
+                
                 boardSize = new Vector2(650, 400);
+                ballsLogic = ballsLogic ?? LogicApi.CreateBallsLogic(boardSize);
                 ballsAmount = 5;
-                ballsLogic = LogicApi.CreateBallsLogic(boardSize);
-                ballsLogic.PositionChange += (sender, args) =>
-                {
-                    BallPositionChange?.Invoke(this, new OnPositionChange(args.Position,args.ballid));
-                };
-             
+                IDisposable observer = ballsLogic.Subscribe<int>(x => Balls[x - 1].Move(ballsLogic.getBallPosition(x).X, ballsLogic.getBallPosition(x).Y));
+                eventObservable = Observable.FromEventPattern<BallChaneEventArgs>(this, "BallChanged");
+
             }
             public override void StartSimulation()
             {
                 ballsLogic.AddBalls(ballsAmount);
+                for (int i = 1; i <= ballsAmount; i++)
+                {
+                    BallModel newBall = new BallModel(ballsLogic.getBallPosition(i).X, ballsLogic.getBallPosition(i).Y, 40);
+                    Balls.Add(newBall);
+                }
+
+                foreach (BallModel ball in Balls)
+                {
+                    BallChanged?.Invoke(this, new BallChaneEventArgs() { Ball = ball });
+                }
             }
 
          /*   public override void StopSimulation()
@@ -77,9 +88,9 @@ namespace TPW.Presentation.Model
                 return ballsAmount;
             }
 
-            public override void OnBallPositionChange(OnPositionChange args)
+            public override IDisposable Subscribe(IObserver<IBall> observer)
             {
-                BallPositionChange?.Invoke(this, args);
+                return eventObservable.Subscribe(x => observer.OnNext(x.EventArgs.Ball), ex => observer.OnError(ex), () => observer.OnCompleted());
             }
         }
     }

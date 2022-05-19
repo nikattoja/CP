@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 using TPW.Dane;
 
 namespace TPW.Logika
-{ 
+{
 
-
-public abstract class LogicApi : IObserver<int>, IObservable<int>
+    public class OnPositionChangeEventArgs : EventArgs
     {
-        public class OnPositionChangeEventArgs : EventArgs
-        {
-            public readonly Vector2 Position;
-            public readonly int ballid;
+        public readonly Vector2 Position;
+        public readonly int ballid;
 
-            public OnPositionChangeEventArgs(int ballid,Vector2 Position)
-            {
-                this.Position = Position;
-                this.ballid = ballid;
-            }
+        public OnPositionChangeEventArgs(int ballid, Vector2 Position)
+        {
+            this.Position = Position;
+            this.ballid = ballid;
         }
+    }
+    public abstract class LogicApi : IObserver<int>, IObservable<int>
+    {
+
 
         public abstract IDisposable Subscribe(IObserver<int> observer);
 

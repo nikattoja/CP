@@ -39,7 +39,7 @@ namespace TPW.Dane
             while (true)
             {
 
-
+                GetNextPosition();
                 foreach (var observer in observers)
                 {
                     if (observer != null)

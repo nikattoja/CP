@@ -15,7 +15,7 @@ namespace TPW.Presentation.ViewModel
     {
         private ModelAPI model;
         private string inputText;
-        public AsyncObservableCollection<BallPosition> Circles { get; set; }
+        public ObservableCollection<IBall> Circles { get; set; }
 
         public int BallsCount
         {
@@ -64,24 +64,13 @@ namespace TPW.Presentation.ViewModel
         }
         public MainViewModel() : this(ModelAPI.CreateApi())
         {
-            Circles = new AsyncObservableCollection<BallPosition>();
-
+            Circles = new ObservableCollection<IBall>();
+            IDisposable observer = model.Subscribe(x => Circles.Add(x));
             BallsCount = 5;
 
             StartSimulationButton = new RelayCommand(() =>
             {
                 model.SetBallNumber(readFromTextBox());
-
-                for (int i = 0; i < BallsCount; i++)
-                {
-                    Circles.Add(new BallPosition());
-                }
-
-                model.BallPositionChange += (sender, argv) =>
-                {
-                    if(Circles.Count > 0)
-                        Circles[argv.Id].ChangePosition(argv.Position);
-                };
                 model.StartSimulation();
             });
 
@@ -198,51 +187,3 @@ public class AsyncObservableCollection<T> : ObservableCollection<T>
     }
 }
 
-public class BallPosition : INotifyPropertyChanged
-{
-    private Vector2 pos;
-    public float X
-    {
-        get { return pos.X; }
-        set { pos.X = value; OnPropertyChanged(); }
-    }
-    public float Y
-    {
-        get { return pos.Y; }
-        set { pos.Y = value; OnPropertyChanged(); }
-    }
-
-    public BallPosition(float x, float y)
-	{
-		X = x;
-		Y = y;
-    }
-    public BallPosition(Vector2 position)
-    {
-        X = position.X;
-        Y = position.Y;
-    }
-
-	public BallPosition()
-	{
-        X = 0;
-        Y = 0;
-	}
-
-    public void ChangePosition(Vector2 position)
-	{
-        this.X = position.X;
-        this.Y = position.Y;
-	}
-
-	public override string ToString()
-	{
-        return $"({X}, {Y})";
-	}
-
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected virtual void OnPropertyChanged([CallerMemberName] string caller = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
-    }
-}
