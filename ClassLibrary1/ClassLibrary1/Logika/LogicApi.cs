@@ -109,8 +109,20 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
                         Collisions collisions = new Collisions(tmpBallList[value].Position, tmpBallList[value].Velocity, 40);
                         
                         for(int i = 1; i < tmpBallList.Count+1; i++)
-                        { 
-
+                        {
+                            if (value != i)
+                            {
+                                if (collisions.IsCollision(tmpBallList[i].Position+tmpBallList[i].Velocity, 40, true))
+                                {
+                                    if (collisions.IsCollision(tmpBallList[i].Position, 40, true))
+                                    {
+                                        System.Diagnostics.Trace.WriteLine("Ball " + value + " hit ball " + i);
+                                        Vector2[] VelocityTab = collisions.ImpulseSpeed(tmpBallList[value].Velocity, tmpBallList[i].Velocity);
+                                        daneAPI.SetBallSpeed(value, VelocityTab[0]);
+                                        daneAPI.SetBallSpeed(i, VelocityTab[1]);
+                                    }
+                                }
+                            }
                         }
                        BallChanged?.Invoke(this, new OnPositionChangeEventArgs(value));
                     }
