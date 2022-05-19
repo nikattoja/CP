@@ -25,7 +25,7 @@ namespace TPW.Presentation.ViewModel
                 if (value >= 0)
                 {
                     model.SetBallNumber(value);
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -38,7 +38,7 @@ namespace TPW.Presentation.ViewModel
             set
             {
                 inputText = value;
-                OnPropertyChanged(nameof(numberOfBalls));
+                RaisePropertyChanged(nameof(numberOfBalls));
             }
         }
         public ICommand StartSimulationButton { get; }
@@ -46,6 +46,23 @@ namespace TPW.Presentation.ViewModel
         public MainViewModel(ModelAPI baseModel)
         {
             this.model = baseModel;
+            Circles = new ObservableCollection<IBall>();
+            IDisposable observer = model.Subscribe(x => Circles.Add(x));
+            BallsCount = 5;
+
+            StartSimulationButton = new RelayCommand(() =>
+            {
+                model.SetBallNumber(readFromTextBox());
+                model.StartSimulation();
+            });
+
+            StopSimulationButton = new RelayCommand(() =>
+            {
+                // model.StopSimulation();
+                Circles.Clear();
+                model.SetBallNumber(BallsCount);
+
+            });
         }
         public int readFromTextBox()
         {
@@ -64,30 +81,15 @@ namespace TPW.Presentation.ViewModel
         }
         public MainViewModel() : this(ModelAPI.CreateApi())
         {
-            Circles = new ObservableCollection<IBall>();
-            IDisposable observer = model.Subscribe(x => Circles.Add(x));
-            BallsCount = 5;
 
-            StartSimulationButton = new RelayCommand(() =>
-            {
-                model.SetBallNumber(readFromTextBox());
-                model.StartSimulation();
-            });
-
-            StopSimulationButton = new RelayCommand(() =>
-            {
-               // model.StopSimulation();
-                Circles.Clear();
-                model.SetBallNumber(BallsCount);
-
-            });
         }
+ 
 
         // Event for View update
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string caller = "")
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

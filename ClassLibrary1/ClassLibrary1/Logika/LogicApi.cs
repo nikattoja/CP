@@ -10,29 +10,19 @@ using TPW.Dane;
 namespace TPW.Logika
 {
 
-    public class OnPositionChangeEventArgs : EventArgs
-    {
-        public readonly Vector2 Position;
-        public readonly int ballid;
-
-        public OnPositionChangeEventArgs(int ballid, Vector2 Position)
-        {
-            this.Position = Position;
-            this.ballid = ballid;
-        }
-    }
+   
     public abstract class LogicApi : IObserver<int>, IObservable<int>
     {
 
-
+        public class OnPositionChangeEventArgs : EventArgs
+        {
+            public int ballId { get; set; }
+        }
         public abstract IDisposable Subscribe(IObserver<int> observer);
 
 	public event EventHandler<OnPositionChangeEventArgs> PositionChange;
 	public abstract void AddBalls(int howMany);
-	protected virtual void OnPositionChange(OnPositionChangeEventArgs args)
-	{
-		PositionChange?.Invoke(this, args);
-	}
+
 
 	public static LogicApi CreateBallsLogic(Vector2 boardSize, DaneAPI data = default(DaneAPI))
 	{
@@ -53,14 +43,14 @@ namespace TPW.Logika
             private IObservable<EventPattern<OnPositionChangeEventArgs>> eventObservable = null;
             public event EventHandler<OnPositionChangeEventArgs> BallChanged;
 
-            public CancellationTokenSource CancelSimulationSource { get; private set; }
+
 
             public BallsLogic(Vector2 boardSize,DaneAPI daneAPI)
             {
                 eventObservable = Observable.FromEventPattern<OnPositionChangeEventArgs>(this, "BallChanged");
                 this.daneAPI = daneAPI;
                 BoardSize = boardSize;
-                CancelSimulationSource = new CancellationTokenSource();
+
             }
             public override Vector2 getBallPosition(int index)
             {
@@ -69,10 +59,7 @@ namespace TPW.Logika
 
             public Vector2 BoardSize { get; }
 
-            protected override void OnPositionChange(OnPositionChangeEventArgs args)
-            { 
-                base.OnPositionChange(args);
-            }
+
             public List<Ball> GetBallsList()
             {
                 return daneAPI.GetBallsList();
@@ -91,7 +78,7 @@ namespace TPW.Logika
 
             public override IDisposable Subscribe(IObserver<int> observer)
             {
-                return eventObservable.Subscribe(x => observer.OnNext(x.EventArgs.ballid), ex => observer.OnError(ex), () => observer.OnCompleted());
+                return eventObservable.Subscribe(x => observer.OnNext(x.EventArgs.ballId), ex => observer.OnError(ex), () => observer.OnCompleted());
             }
 
             public override void OnCompleted()
@@ -106,10 +93,12 @@ namespace TPW.Logika
 
             public override void OnNext(int value)
             {
-                {
+                System.Diagnostics.Trace.WriteLine("XDDD");
+                
+                    System.Diagnostics.Trace.WriteLine("XD1DD");
                     var tmpBallList = daneAPI.GetBallsList();
-                    
 
+                    System.Diagnostics.Trace.WriteLine("XDDD2");
                     Monitor.Enter(_lock);
                     try
                     {
@@ -117,21 +106,22 @@ namespace TPW.Logika
                         
                         for(int i = 1; i < tmpBallList.Count+1; i++)
                         {
+                            System.Diagnostics.Trace.WriteLine("XDDD3");
+                            Vector2[] VelocityTab = collisions.ImpulseSpeed(tmpBallList[value].Velocity, tmpBallList[i].Velocity);
+                            daneAPI.SetBallSpeed(value, VelocityTab[0]);
+                            daneAPI.SetBallSpeed(i, VelocityTab[1]);
                             if (value != i)
                             {
                                 if (collisions.IsCollision(tmpBallList[i].Position+tmpBallList[i].Velocity, 40, true))
                                 {
                                     if (collisions.IsCollision(tmpBallList[i].Position, 40, true))
                                     {
-                                        System.Diagnostics.Trace.WriteLine("Ball " + value + " hit ball " + i);
-                                        Vector2[] VelocityTab = collisions.ImpulseSpeed(tmpBallList[value].Velocity, tmpBallList[i].Velocity);
-                                        daneAPI.SetBallSpeed(value, VelocityTab[0]);
-                                        daneAPI.SetBallSpeed(i, VelocityTab[1]);
+                                    
                                     }
                                 }
                             }
                         }
-                       BallChanged?.Invoke(this, new OnPositionChangeEventArgs(value,tmpBallList[value].Position));
+                       BallChanged?.Invoke(this, new OnPositionChangeEventArgs {ballId = value });
                     }
                     catch (SynchronizationLockException exception)
                     {
@@ -141,7 +131,7 @@ namespace TPW.Logika
                     {
                         Monitor.Exit(_lock);
                     }
-                }
+                
             }
             public virtual void Unsubscribe()
             {

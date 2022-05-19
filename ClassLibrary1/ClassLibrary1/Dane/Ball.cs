@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -23,31 +24,39 @@ namespace TPW.Dane
             var y = (float)(rng.NextDouble() - 0.5) * 1;
             var result = new Vector2(x, y);
             observers = new List<IObserver<int>>();
-        this.Velocity = result;
+
         }
 
         private Vector2 GetRandomPointInsideBoard()
         {
             var rng = new Random();
-            var x = rng.Next(40, (int)(650 - 40));
-            var y = rng.Next(40, (int)(400 - 40));
+            var x = rng.Next(40, (int)(400 - 40));
+            var y = rng.Next(40, (int)(650 - 40));
 
             return new Vector2(x, y);
+        }
+        public void StartMoving()
+        {
+            this.BallTask = new Task(Simulate);
+            BallTask.Start();
         }
         public void Simulate()
         {
             while (true)
             {
+                Position = GetNextPosition();
 
-                GetNextPosition();
-                foreach (var observer in observers)
+                
+                foreach (var observer in observers.ToList())
                 {
+
                     if (observer != null)
                     {
                         observer.OnNext(id);
                     }
                 }
-                System.Threading.Thread.Sleep(1);
+                System.Threading.Thread.Sleep(10);
+
             }
         }
         private Vector2 GetNextPosition()
@@ -70,10 +79,7 @@ namespace TPW.Dane
             return Position + newPosition2;
         }
 
-        public override string ToString()
-        {
-            return $"({Position.X}, {Position.Y})";
-        }
+
     #region provider
 
     public IDisposable Subscribe(IObserver<int> observer)
