@@ -87,7 +87,7 @@ namespace TPW.Presentation.ViewModel
 
             StopSimulationButton = new RelayCommand(() =>
             {
-                model.StopSimulation();
+               // model.StopSimulation();
                 Circles.Clear();
                 model.SetBallNumber(BallsCount);
 

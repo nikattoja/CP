@@ -44,13 +44,13 @@ namespace TPW.Presentation.Model
             public MainModel()
             {
                 boardSize = new Vector2(650, 400);
-                ballsAmount = 0;
+                ballsAmount = 5;
                 ballsLogic = LogicApi.CreateBallsLogic(boardSize);
                 ballsLogic.PositionChange += (sender, args) =>
                 {
-                    BallPositionChange?.Invoke(this, new OnPositionChange(args.Ball.Position, args.Ball.Id));
+                    BallPositionChange?.Invoke(this, new OnPositionChange(args.Position,args.ballid));
                 };
-                eventObservable = Observable.FromEventPattern<OnPositionChange>(this, "BallChanged");
+             
             }
             public override void StartSimulation()
             {

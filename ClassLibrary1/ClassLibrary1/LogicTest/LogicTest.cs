@@ -5,7 +5,7 @@ using System.Numerics;
 using TPW.Logika;
 
 namespace TestProject1
-{
+{/*
     public class Tests
     {
         private LogicApi logicApi;
@@ -36,7 +36,7 @@ namespace TestProject1
             Assert.AreNotEqual(logicApi.Get(0).Position, startPositionList);
         }	
 
-	}
+	}*/
 }
 
 

@@ -15,10 +15,12 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
     {
         public class OnPositionChangeEventArgs : EventArgs
         {
+            public readonly Vector2 Position;
             public readonly int ballid;
 
-            public OnPositionChangeEventArgs(int ballid)
+            public OnPositionChangeEventArgs(int ballid,Vector2 Position)
             {
+                this.Position = Position;
                 this.ballid = ballid;
             }
         }
@@ -40,6 +42,7 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
         public abstract void OnCompleted();
         public abstract void OnError(Exception error);
         public abstract void OnNext(int value);
+        public abstract Vector2 getBallPosition(int index);
 
         internal class BallsLogic : LogicApi, IObservable<int>
         {
@@ -58,6 +61,10 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
                 this.daneAPI = daneAPI;
                 BoardSize = boardSize;
                 CancelSimulationSource = new CancellationTokenSource();
+            }
+            public override Vector2 getBallPosition(int index)
+            {
+                return this.daneAPI.GetPositionBall(index);
             }
 
             public Vector2 BoardSize { get; }
@@ -103,7 +110,7 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
                     var tmpBallList = daneAPI.GetBallsList();
                     
 
-                    Monitor.Enter(tmpBallList);
+                    Monitor.Enter(_lock);
                     try
                     {
                         Collisions collisions = new Collisions(tmpBallList[value].Position, tmpBallList[value].Velocity, 40);
@@ -124,7 +131,7 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
                                 }
                             }
                         }
-                       BallChanged?.Invoke(this, new OnPositionChangeEventArgs(value));
+                       BallChanged?.Invoke(this, new OnPositionChangeEventArgs(value,tmpBallList[value].Position));
                     }
                     catch (SynchronizationLockException exception)
                     {
@@ -132,7 +139,7 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
                     }
                     finally
                     {
-                        Monitor.Exit(tmpBallList);
+                        Monitor.Exit(_lock);
                     }
                 }
             }
