@@ -19,7 +19,7 @@ public class OnPositionChangeEventArgs : EventArgs
 
 public abstract class LogicApi
 {
-	public abstract void Add(IBall ball);
+	public abstract void Add(int id);
 	public abstract IBall Get(int index);
 	public abstract int GetBallCount();
 	public static LogicApi CreateBallsList()
@@ -61,6 +61,7 @@ public abstract class LogicApi
             public BallsLogic(LogicApi dataBalls, Vector2 boardSize,DaneAPI daneAPI)
             {
                 daneAPI = DaneAPI.CreateDataBall();
+                
                 this.dataBalls = dataBalls;
                 BoardSize = boardSize;
                 CancelSimulationSource = new CancellationTokenSource();
@@ -70,6 +71,7 @@ public abstract class LogicApi
 
             protected override void OnPositionChange(OnPositionChangeEventArgs args)
             {
+                this.daneAPI.
                 base.OnPositionChange(args);
             }
      

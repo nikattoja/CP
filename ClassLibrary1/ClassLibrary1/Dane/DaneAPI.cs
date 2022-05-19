@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading;
 
 namespace TPW.Dane
@@ -14,6 +15,11 @@ namespace TPW.Dane
         public abstract void OnCompleted();
         public abstract void OnError(Exception error);
         public abstract void OnNext(int value);
+
+        public abstract void CreateBalls(int howMany);
+        public abstract List<Ball> GetBallsList();
+
+        public abstract void SetBallSpeed(int id, Vector2 velocity);
         public abstract IDisposable Subscribe(IObserver<int> observer);
 
         private class DaneBall : DaneAPI
@@ -30,27 +36,83 @@ namespace TPW.Dane
 
             }
 
+            public override void SetBallSpeed(int id, Vector2 velocity)
+            {
+                ballsList.GetBall(id).Velocity = velocity;
+            }
 
+            public override List<Ball> GetBallsList()
+            {
+                return ballsList.GetBallsList();
+            }
+
+            public override void CreateBalls(int howMany)
+            {
+                barrier = new Barrier(howMany);
+                ballsList.AddBalls(howMany);
+                foreach (var ball in ballsList.GetBallsList())
+                {
+                    Subscribe(ball);
+
+                 
+                }
+            }
 
             public override void OnCompleted()
             {
-                throw new NotImplementedException();
+                Unsubscribe();
             }
 
             public override void OnError(Exception error)
             {
-                throw new NotImplementedException();
+                throw error;
             }
 
             public override void OnNext(int value)
             {
-                throw new NotImplementedException();
+                barrier.SignalAndWait();
+
+                foreach (var observer in observers)
+                {
+                    observer.OnNext(value);
+                }
+            }
+            public virtual void Unsubscribe()
+            {
+                unsubscriber.Dispose();
+            }
+            public virtual void Subscribe(IObservable<int> provider)
+            {
+                if (provider != null)
+                    unsubscriber = provider.Subscribe(this);
             }
 
             public override IDisposable Subscribe(IObserver<int> observer)
             {
-                throw new NotImplementedException();
+                if (!observers.Contains(observer))
+                    observers.Add(observer);
+                return new Unsubscriber(observers, observer);
+            }
+
+            private class Unsubscriber : IDisposable
+            {
+                private IList<IObserver<int>> _observers;
+                private IObserver<int> _observer;
+
+                public Unsubscriber
+                (IList<IObserver<int>> observers, IObserver<int> observer)
+                {
+                    _observers = observers;
+                    _observer = observer;
+                }
+
+                public void Dispose()
+                {
+                    if (_observer != null && _observers.Contains(_observer))
+                        _observers.Remove(_observer);
+                }
             }
         }
+        }
     }
-}
+

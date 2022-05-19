@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 
 namespace TPW.Dane
 {
-    public interface IBall
-    {
-        Vector2 Position { get; set; }
-        Vector2 Velocity { get; set; }
-    }
 
-    internal class Ball : IBall
+    public class Ball : IObservable<int>
     {
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }
         public int id;
         private Task BallTask;
+        internal readonly IList<IObserver<int>> observers;
 
         public Ball(int id)
         {
@@ -25,8 +22,8 @@ namespace TPW.Dane
             var x = (float)(rng.NextDouble() - 0.5) * 1;
             var y = (float)(rng.NextDouble() - 0.5) * 1;
             var result = new Vector2(x, y);
-
-            this.Velocity = result;
+            observers = new List<IObserver<int>>();
+        this.Velocity = result;
         }
 
         private Vector2 GetRandomPointInsideBoard()
@@ -39,11 +36,18 @@ namespace TPW.Dane
         }
         public void Simulate()
         {
-            while (!owner.CancelSimulationSource.Token.IsCancellationRequested)
+            while (true)
             {
-                Position = GetNextPosition();
-                PositionChange?.Invoke(this, new OnPositionChangeEventArgs(this));
-                Thread.Sleep(2);
+
+
+                foreach (var observer in observers)
+                {
+                    if (observer != null)
+                    {
+                        observer.OnNext(id);
+                    }
+                }
+                System.Threading.Thread.Sleep(1);
             }
         }
         private Vector2 GetNextPosition()
@@ -70,5 +74,34 @@ namespace TPW.Dane
         {
             return $"({Position.X}, {Position.Y})";
         }
+    #region provider
+
+    public IDisposable Subscribe(IObserver<int> observer)
+    {
+        if (!observers.Contains(observer))
+            observers.Add(observer);
+        return new Unsubscriber(observers, observer);
     }
+
+    private class Unsubscriber : IDisposable
+    {
+        private IList<IObserver<int>> _observers;
+        private IObserver<int> _observer;
+
+        public Unsubscriber
+        (IList<IObserver<int>> observers, IObserver<int> observer)
+        {
+            _observers = observers;
+            _observer = observer;
+        }
+
+        public void Dispose()
+        {
+            if (_observer != null && _observers.Contains(_observer))
+                _observers.Remove(_observer);
+        }
+    }
+
+    #endregion
+}
 }
