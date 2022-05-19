@@ -27,9 +27,9 @@ public abstract class LogicApi
 		return new BallsList();
 	}
   
-	public static IBall CreateBall(Vector2 position, Vector2 velocity)
+	public static IBall CreateBall()
     {
-        return new Ball(position,velocity);
+        return new Ball();
     }
 
 	public event EventHandler<OnPositionChangeEventArgs> PositionChange;
@@ -71,21 +71,14 @@ public abstract class LogicApi
             {
                 base.OnPositionChange(args);
             }
-            private Vector2 GetRandomNormalizedVector()
-            {
-                var rng = new Random();
-                var x = (float)(rng.NextDouble() - 0.5) * 2;
-                var y = (float)(rng.NextDouble() - 0.5) * 2;
-                var result = new Vector2(x, y);
-                return Vector2.Normalize(result);
-            }
+     
             public override void AddBalls(int howMany)
             {
                 for (var i = 0; i < howMany; i++)
                 {
                     var randomPoint = GetRandomPointInsideBoard();
-                    var randomVelocity = GetRandomNormalizedVector();
-                    dataBalls.Add(LogicApi.CreateBall(randomPoint, randomVelocity));
+
+                    dataBalls.Add(LogicApi.CreateBall());
                 }
             }
 

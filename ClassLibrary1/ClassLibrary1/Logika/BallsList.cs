@@ -18,7 +18,10 @@ namespace TPW.Logika
         }
         public override void AddBalls(int howMany)
         {
-            throw new System.NotImplementedException();
+            for(int i = 0; i < howMany; i++)
+            {
+                ballsList.Add(new Ball());
+            }
         }
 
         public override IBall Get(int index)
