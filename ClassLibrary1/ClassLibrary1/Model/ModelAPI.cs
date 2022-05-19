@@ -55,7 +55,6 @@ namespace TPW.Presentation.Model
             public override void StartSimulation()
             {
                 ballsLogic.AddBalls(ballsAmount);
-                ballsLogic.StartSimulation();
             }
 
          /*   public override void StopSimulation()
