@@ -18,7 +18,8 @@ namespace TPW.Dane
 
         public abstract void CreateBalls(int howMany);
         public abstract List<Ball> GetBallsList();
-
+        public abstract Vector2 GetPositionBall(int index);
+        public abstract Vector2 GetVelocityBall(int index);
         public abstract int GetBallsCount();
 
         public abstract void SetBallSpeed(int id, Vector2 velocity);
@@ -36,6 +37,15 @@ namespace TPW.Dane
                 this.ballsList = new BallsList();
                 observers = new List<IObserver<int>>();
 
+            }
+            public override Vector2 GetPositionBall(int index)
+            {
+                return ballsList.GetBall(index).Position;
+            }
+
+            public override Vector2 GetVelocityBall(int index)
+            {
+                return ballsList.GetBall(index).Velocity;
             }
 
             public override void SetBallSpeed(int id, Vector2 velocity)

@@ -101,31 +101,18 @@ public abstract class LogicApi : IObserver<int>, IObservable<int>
             {
                 {
                     var tmpBallList = daneAPI.GetBallsList();
+                    
+
                     Monitor.Enter(tmpBallList);
                     try
                     {
+                        Collisions collisions = new Collisions(tmpBallList[value].Position, tmpBallList[value].Velocity, 40);
                         
-                        /*CollisionLogic CollisionLogic = new CollisionLogic(DataAPI.GetListOfBalls());
-                        CollisionLogic.ControlBallCollisions();
-                        CollisionLogic.ControlWallCollisions();
-                        /
-                        CollisionLogic CollisionLogic = new CollisionLogic(DataAPI.GetListOfBalls());
+                        for(int i = 1; i < tmpBallList.Count+1; i++)
+                        { 
 
-                        for(int i=0; i < DataAPI.GetNumberOfBalls(); i++)
-                        {
-                            CollisionLogic.wall(i);
-                            CollisionLogic.kolizja(i);
                         }
-
-                        
-                        foreach (var ball in CollisionLogic.ListOfBalls)
-                        {
-                            CollisionLogic.CollideWall(ball);
-                            CollisionLogic.kolizja2(ball);
-                        } 
-                      */
-
-                        BallChanged?.Invoke(this, new OnPositionChangeEventArgs(value));
+                       BallChanged?.Invoke(this, new OnPositionChangeEventArgs(value));
                     }
                     catch (SynchronizationLockException exception)
                     {
