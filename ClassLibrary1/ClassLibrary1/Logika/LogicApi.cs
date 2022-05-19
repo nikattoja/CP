@@ -55,11 +55,12 @@ public abstract class LogicApi
             private readonly DaneAPI daneAPI;
             public static readonly int BallRadius = 40;
             private readonly LogicApi dataBalls;
+            
             public CancellationTokenSource CancelSimulationSource { get; private set; }
 
             public BallsLogic(LogicApi dataBalls, Vector2 boardSize,DaneAPI daneAPI)
             {
-                this.daneAPI = daneAPI;
+                daneAPI = DaneAPI.CreateDataBall();
                 this.dataBalls = dataBalls;
                 BoardSize = boardSize;
                 CancelSimulationSource = new CancellationTokenSource();

@@ -7,6 +7,11 @@ namespace TPW.Dane
     {
         private readonly List<Ball> ballsList;
 
+        public List<Ball> GetBallsList()
+        {
+            return ballsList;
+        }
+
         public BallsList()
         {
             this.ballsList = new List<Ball>();
@@ -18,6 +23,14 @@ namespace TPW.Dane
             {
                 ballsList.Add(new Ball(i+1));
             }
+        }
+        public Ball GetBall(int id)
+        {
+            return ballsList[id - 1];
+        }
+        public void SetBallSpeed(int id, Vector2 velocity)
+        {
+            ballsList[id].Velocity = velocity;
         }
 
 
