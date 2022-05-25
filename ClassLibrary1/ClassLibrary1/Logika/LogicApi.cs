@@ -50,6 +50,7 @@ namespace TPW.Logika
                 eventObservable = Observable.FromEventPattern<OnPositionChangeEventArgs>(this, "BallChanged");
                 this.daneAPI = daneAPI;
                 BoardSize = boardSize;
+                Subscribe(daneAPI);
 
             }
             public override Vector2 getBallPosition(int index)
@@ -93,31 +94,29 @@ namespace TPW.Logika
 
             public override void OnNext(int value)
             {
-                System.Diagnostics.Trace.WriteLine("XDDD");
-                
-                    System.Diagnostics.Trace.WriteLine("XD1DD");
+
                     var tmpBallList = daneAPI.GetBallsList();
 
-                    System.Diagnostics.Trace.WriteLine("XDDD2");
+
                     Monitor.Enter(_lock);
                     try
                     {
-                        Collisions collisions = new Collisions(tmpBallList[value].Position, tmpBallList[value].Velocity, 40);
+                        Collisions collisions = new Collisions(tmpBallList[value-1].Position, tmpBallList[value-1].Velocity, 40);
                         
-                        for(int i = 1; i < tmpBallList.Count+1; i++)
+                        for(int i = 0; i < tmpBallList.Count; i++)
                         {
-                            System.Diagnostics.Trace.WriteLine("XDDD3");
-                            Vector2[] VelocityTab = collisions.ImpulseSpeed(tmpBallList[value].Velocity, tmpBallList[i].Velocity);
-                            daneAPI.SetBallSpeed(value, VelocityTab[0]);
-                            daneAPI.SetBallSpeed(i, VelocityTab[1]);
+
                             if (value != i)
                             {
                                 if (collisions.IsCollision(tmpBallList[i].Position+tmpBallList[i].Velocity, 40, true))
                                 {
                                     if (collisions.IsCollision(tmpBallList[i].Position, 40, true))
                                     {
-                                    
-                                    }
+                                    System.Diagnostics.Trace.WriteLine("Ball " + value + " hit ball " + i);
+                                    Vector2[] VelocityTab = collisions.ImpulseSpeed(tmpBallList[value-1].Velocity, tmpBallList[i].Velocity);
+                                    daneAPI.SetBallSpeed(value, VelocityTab[0]);
+                                    daneAPI.SetBallSpeed(i+1, VelocityTab[1]);
+                                }
                                 }
                             }
                         }

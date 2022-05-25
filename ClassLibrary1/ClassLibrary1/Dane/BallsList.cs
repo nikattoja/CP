@@ -26,7 +26,7 @@ namespace TPW.Dane
         }
         public Ball GetBall(int id)
         {
-            return ballsList[id - 1];
+            return ballsList[id-1];
         }
         public void SetBallSpeed(int id, Vector2 velocity)
         {

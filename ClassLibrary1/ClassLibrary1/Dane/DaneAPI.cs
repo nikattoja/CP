@@ -87,13 +87,11 @@ namespace TPW.Dane
             public override void OnNext(int value)
             {
 
-                System.Diagnostics.Trace.WriteLine("Ball "  + " position x" );
                 barrier.SignalAndWait();
 
                 foreach (var observer in observers)
                 {
 
-                    System.Diagnostics.Trace.WriteLine("Ball ddd");
                     observer.OnNext(value);
                 }
             }

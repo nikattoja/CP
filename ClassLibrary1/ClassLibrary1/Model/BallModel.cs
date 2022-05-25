@@ -53,6 +53,7 @@ namespace TPW.Presentation.Model
         {
            Left = poitionX;
            Top = positionY;
+            System.Diagnostics.Trace.WriteLine("top " + Top + " Left " + Left);
         }
 
         private void RaisePropertyChanged([CallerMemberName] string propertyName = "")

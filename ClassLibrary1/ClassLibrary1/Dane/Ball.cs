@@ -52,6 +52,7 @@ namespace TPW.Dane
 
                     if (observer != null)
                     {
+                        
                         observer.OnNext(id);
                     }
                 }

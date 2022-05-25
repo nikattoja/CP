@@ -17,6 +17,8 @@ namespace TPW.Presentation.ViewModel
         private string inputText;
         public ObservableCollection<IBall> Circles { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int BallsCount
         {
             get { return model.GetBallsCount(); }
@@ -86,7 +88,7 @@ namespace TPW.Presentation.ViewModel
  
 
         // Event for View update
-        public event PropertyChangedEventHandler PropertyChanged;
+
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
