@@ -11,8 +11,8 @@ namespace TPW.Presentation.Model
 {
     public interface IBall : INotifyPropertyChanged
     {
-        double Top { get; }
-        double Left { get; }
+        double Y { get; }
+        double X { get; }
     }
     public class BallChaneEventArgs : EventArgs
     {
@@ -57,7 +57,7 @@ namespace TPW.Presentation.Model
                 ballsLogic.AddBalls(ballsAmount);
                 for (int i = 1; i <= ballsAmount; i++)
                 {
-                    BallModel newBall = new BallModel(ballsLogic.getBallPosition(i).X, ballsLogic.getBallPosition(i).Y, 10);
+                    BallModel newBall = new BallModel(ballsLogic.getBallPosition(i).X, ballsLogic.getBallPosition(i).Y);
                     Balls.Add(newBall);
                 }
 

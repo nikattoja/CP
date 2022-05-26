@@ -30,9 +30,7 @@
             <Button Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Command="{Binding StartSimulationButton}"/>
             <TextBox Text="{Binding numberOfBalls}" AcceptsReturn="True" Name="InputText" TextWrapping="Wrap" MaxHeight="172" Width="52" ScrollViewer.VerticalScrollBarVisibility="Auto" Canvas.Left="266" Canvas.Top="517" />
-            <Button Content="Stop" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Command="{Binding StopSimulationButton}" Click="Button_Click"/>
-            
+
         </StackPanel>
         <StackPanel Grid.Column="0" VerticalAlignment="Center">
             <Canvas x:Name="BallCanvas" Height="400" Width="650">
@@ -44,7 +42,7 @@
                             <Canvas>
                                 <Ellipse Width="40" Height="40" Fill="red" Stroke="#707070" StrokeThickness="2">
                                     <Ellipse.RenderTransform>
-                                        <TranslateTransform X="{Binding Left}" Y="{Binding Top}"/>
+                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
                             </Canvas>
