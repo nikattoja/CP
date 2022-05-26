@@ -5,7 +5,7 @@ using System.Numerics;
 using TPW.Logika;
 
 namespace TestProject1
-{/*
+{
     public class Tests
     {
         private LogicApi logicApi;
@@ -19,25 +19,14 @@ namespace TestProject1
         [Test]
         public void AddBallTest()
         {
-
             logicApi.AddBalls(1);
-            Assert.AreEqual(1, logicApi.GetBallCount());
-
+            logicApi.GetBallsList().;
         }
 
-        [Test]
-        public void SimulationTest()
-        {
-            logicApi.AddBalls(1);
-            Assert.AreEqual(1, logicApi.GetBallCount());
-            var startPositionList = new List<Vector2>();
-            startPositionList.Add(logicApi.Get(0).Position);
-            logicApi.StartSimulation();
-            Assert.AreNotEqual(logicApi.Get(0).Position, startPositionList);
-        }	
+	
 
 	}
-    */
+    
 }
 
 

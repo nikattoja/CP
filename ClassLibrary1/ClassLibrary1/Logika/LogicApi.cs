@@ -35,10 +35,11 @@ namespace TPW.Logika
         public abstract void OnError(Exception error);
         public abstract void OnNext(int value);
         public abstract Vector2 getBallPosition(int index);
+        public abstract List<Ball> GetBallsList();
 
         internal class BallsLogic : LogicApi, IObservable<int>
         {
-            private readonly DaneAPI daneAPI;
+            public readonly DaneAPI daneAPI;
             public static readonly int BallRadius = 40;
             private IDisposable unsubscriber;
             static object _lock = new object();
@@ -63,7 +64,7 @@ namespace TPW.Logika
             public Vector2 BoardSize { get; }
 
 
-            public List<Ball> GetBallsList()
+            public override List<Ball> GetBallsList()
             {
                 return daneAPI.GetBallsList();
             }
