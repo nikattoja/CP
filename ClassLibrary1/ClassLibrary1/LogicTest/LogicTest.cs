@@ -20,7 +20,7 @@ namespace TestProject1
         public void AddBallTest()
         {
             logicApi.AddBalls(1);
-            logicApi.GetBallsList().;
+            //logicApi.GetBallsList().;
         }
 
 	
