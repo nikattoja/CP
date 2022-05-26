@@ -13,16 +13,16 @@ namespace TPW.Presentation.Model
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public BallModel(double top, double left, int radius)
+        public BallModel(double y, double X)
         {
            
-            Top = top;
-            Left = left;
+            Y = y;
+            this.X = X;
         }
 
         private double top;
 
-        public double Top
+        public double Y
         {
             get { return top; }
             set 
@@ -36,7 +36,7 @@ namespace TPW.Presentation.Model
 
         private double left;
 
-        public double Left
+        public double X
         {
             get { return left; }
             set
@@ -50,8 +50,8 @@ namespace TPW.Presentation.Model
 
         public void Move(double positionX, double positionY)
         {
-           Left = positionX;
-           Top = positionY;
+           X = positionX;
+           Y = positionY;
         }
 
         private void RaisePropertyChanged([CallerMemberName] string propertyName = "")
