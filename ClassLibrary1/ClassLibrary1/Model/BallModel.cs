@@ -10,7 +10,7 @@ namespace TPW.Presentation.Model
     public class BallModel : IBall
     {
 
-        public int Diameter { get;}
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public BallModel(double top, double left, int radius)
@@ -18,7 +18,6 @@ namespace TPW.Presentation.Model
            
             Top = top;
             Left = left;
-            Diameter = radius * 2;
         }
 
         private double top;
@@ -49,11 +48,10 @@ namespace TPW.Presentation.Model
             }
         }
 
-        public void Move(double poitionX, double positionY)
+        public void Move(double positionX, double positionY)
         {
-           Left = poitionX;
+           Left = positionX;
            Top = positionY;
-            System.Diagnostics.Trace.WriteLine("top " + Top + " Left " + Left);
         }
 
         private void RaisePropertyChanged([CallerMemberName] string propertyName = "")

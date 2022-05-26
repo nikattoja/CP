@@ -23,6 +23,7 @@ namespace TPW.Dane
             var x = (float)(rng.NextDouble() - 0.5) * 1;
             var y = (float)(rng.NextDouble() - 0.5) * 1;
             var result = new Vector2(x, y);
+            Velocity = result;
             observers = new List<IObserver<int>>();
 
         }
@@ -30,8 +31,8 @@ namespace TPW.Dane
         private Vector2 GetRandomPointInsideBoard()
         {
             var rng = new Random();
-            var x = rng.Next(40, (int)(400 - 40));
-            var y = rng.Next(40, (int)(650 - 40));
+            var x = rng.Next(40, (int)(650 - 40));
+            var y = rng.Next(40, (int)(400 - 40));
 
             return new Vector2(x, y);
         }
@@ -56,27 +57,15 @@ namespace TPW.Dane
                         observer.OnNext(id);
                     }
                 }
-                System.Threading.Thread.Sleep(10);
+                System.Threading.Thread.Sleep(1);
 
             }
         }
         private Vector2 GetNextPosition()
         {
-
+            
             Vector2 newPosition = Position + Velocity;
             Vector2 newPosition2 = Velocity;
-
-            if (newPosition.X < 0 || newPosition.X > 650 - 40)
-            {
-                newPosition2.X = -newPosition2.X;
-            }
-
-            if (newPosition.Y < 0 || newPosition.Y > 400 - 40)
-            {
-                newPosition2.Y = -newPosition2.Y;
-            }
-            Velocity = newPosition2;
-
             return Position + newPosition2;
         }
 

@@ -30,6 +30,8 @@ namespace TPW.Logika
 	}
 
         public abstract void OnCompleted();
+
+        public abstract void StopSimulation();
         public abstract void OnError(Exception error);
         public abstract void OnNext(int value);
         public abstract Vector2 getBallPosition(int index);
@@ -98,21 +100,21 @@ namespace TPW.Logika
                     var tmpBallList = daneAPI.GetBallsList();
 
 
-                    Monitor.Enter(_lock);
+                    Monitor.Enter(tmpBallList);
                     try
                     {
-                        Collisions collisions = new Collisions(tmpBallList[value-1].Position, tmpBallList[value-1].Velocity, 40);
+                        Collisions collisions = new Collisions(tmpBallList[value-1].Position, tmpBallList[value-1].Velocity, 0);
                         
                         for(int i = 0; i < tmpBallList.Count; i++)
                         {
 
                             if (value != i)
                             {
-                                if (collisions.IsCollision(tmpBallList[i].Position+tmpBallList[i].Velocity, 40, true))
+                                if (collisions.IsCollision(tmpBallList[i].Position+tmpBallList[i].Velocity, 38, true))
                                 {
-                                    if (collisions.IsCollision(tmpBallList[i].Position, 40, true))
+                                    if (collisions.IsCollision(tmpBallList[i].Position, 38, true))
                                     {
-                                    System.Diagnostics.Trace.WriteLine("Ball " + value + " hit ball " + i);
+   
                                     Vector2[] VelocityTab = collisions.ImpulseSpeed(tmpBallList[value-1].Velocity, tmpBallList[i].Velocity);
                                     daneAPI.SetBallSpeed(value, VelocityTab[0]);
                                     daneAPI.SetBallSpeed(i+1, VelocityTab[1]);
@@ -120,7 +122,20 @@ namespace TPW.Logika
                                 }
                             }
                         }
-                       BallChanged?.Invoke(this, new OnPositionChangeEventArgs {ballId = value });
+                    if (tmpBallList[value-1].Position.X+tmpBallList[value-1].Velocity.X< 0 || tmpBallList[value-1].Position.X+tmpBallList[value-1].Velocity.X > BoardSize.X - 40)
+                    {
+                        var velocityx = tmpBallList[value-1].Velocity.X * -1;
+                        Vector2 speed = new Vector2(velocityx, tmpBallList[value-1].Velocity.Y);
+                        daneAPI.SetBallSpeed(value, speed);
+                    }
+
+                    if (tmpBallList[value-1].Position.Y+tmpBallList[value-1].Velocity.Y< 0 || tmpBallList[value-1].Position.Y+tmpBallList[value-1].Velocity.Y> BoardSize.Y - 40)
+                    {
+                        var velocityY = tmpBallList[value-1].Velocity.Y * -1;
+                        Vector2 speed = new Vector2(tmpBallList[value-1].Velocity.X, velocityY);
+                        daneAPI.SetBallSpeed(value, speed);
+                    }
+                    BallChanged?.Invoke(this, new OnPositionChangeEventArgs {ballId = value });
                     }
                     catch (SynchronizationLockException exception)
                     {
@@ -128,13 +143,18 @@ namespace TPW.Logika
                     }
                     finally
                     {
-                        Monitor.Exit(_lock);
+                        Monitor.Exit(tmpBallList);
                     }
                 
             }
             public virtual void Unsubscribe()
             {
                 unsubscriber.Dispose();
+            }
+
+            public override void StopSimulation()
+            {
+                throw new NotImplementedException();
             }
         }
     }

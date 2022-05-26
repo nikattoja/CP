@@ -13,7 +13,6 @@ namespace TPW.Presentation.Model
     {
         double Top { get; }
         double Left { get; }
-        int Diameter { get; }
     }
     public class BallChaneEventArgs : EventArgs
     {
@@ -23,10 +22,9 @@ namespace TPW.Presentation.Model
     public abstract class ModelAPI : IObservable<IBall>
     {
         public abstract void StartSimulation();
-       // public abstract void StopSimulation();
         public abstract void SetBallNumber(int amount);
         public abstract int GetBallsCount();
-
+        public abstract void StopSimulation();
         public abstract IDisposable Subscribe(IObserver<IBall> observer);
         public static ModelAPI CreateApi()
         {
@@ -43,6 +41,7 @@ namespace TPW.Presentation.Model
             private IObservable<EventPattern<BallChaneEventArgs>> eventObservable = null;
             private List<BallModel> Balls = new List<BallModel>();
 
+
             public MainModel()
             {
                 
@@ -58,7 +57,7 @@ namespace TPW.Presentation.Model
                 ballsLogic.AddBalls(ballsAmount);
                 for (int i = 1; i <= ballsAmount; i++)
                 {
-                    BallModel newBall = new BallModel(ballsLogic.getBallPosition(i).X, ballsLogic.getBallPosition(i).Y, 40);
+                    BallModel newBall = new BallModel(ballsLogic.getBallPosition(i).X, ballsLogic.getBallPosition(i).Y, 10);
                     Balls.Add(newBall);
                 }
 
@@ -68,15 +67,12 @@ namespace TPW.Presentation.Model
                 }
             }
 
-         /*   public override void StopSimulation()
+            public override void StopSimulation()
             {
                 ballsLogic.StopSimulation();
-                ballsLogic = LogicApi.CreateBallsLogic(boardSize);
-                ballsLogic.PositionChange += (sender, args) =>
-                {
-                    BallPositionChange?.Invoke(this, new OnPositionChangeUiAdapterEventArgs(args.Ball.Position, args.Ball.Id));
-                };
-            }*/
+            }
+
+           
 
             public override void SetBallNumber(int amount)
             {

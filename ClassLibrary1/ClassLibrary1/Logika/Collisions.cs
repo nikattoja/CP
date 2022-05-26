@@ -57,7 +57,7 @@ namespace TPW.Logika
             return false;
         }
 
-        public Vector2[] ImpulseSpeed(Vector2 first, Vector2 second )
+public Vector2[] ImpulseSpeed(Vector2 first, Vector2 second )
         {
             var firstAfterChange = second;
             var secondAfterChange = first;

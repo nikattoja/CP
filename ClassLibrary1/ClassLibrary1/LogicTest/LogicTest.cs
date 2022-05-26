@@ -36,7 +36,8 @@ namespace TestProject1
             Assert.AreNotEqual(logicApi.Get(0).Position, startPositionList);
         }	
 
-	}*/
+	}
+    */
 }
 
 
