@@ -6,7 +6,7 @@ namespace TPW.Dane
     internal class BallsList 
     {
         private readonly List<Ball> ballsList;
-
+        private Logger logger;
         public List<Ball> GetBallsList()
         {
             return ballsList;
@@ -19,9 +19,13 @@ namespace TPW.Dane
 
         public void AddBalls(int howMany)
         {
+            logger = new Logger();
             for (int i = 0; i < howMany; i++)
             {
-                ballsList.Add(new Ball(i+1));
+                Ball ball = new Ball(i+1);
+                ball.logger = logger;
+                ballsList.Add(ball);
+               
             }
         }
         public Ball GetBall(int id)

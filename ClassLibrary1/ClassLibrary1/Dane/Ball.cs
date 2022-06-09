@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -13,15 +14,17 @@ namespace TPW.Dane
         public Vector2 Velocity { get; set; }
         public int id;
         private Task BallTask;
+        private Stopwatch Timer = new Stopwatch();
         internal readonly IList<IObserver<int>> observers;
+        public Logger logger;
 
         public Ball(int id)
         {
             this.id = id;
             this.Position = GetRandomPointInsideBoard();
             var rng = new Random();
-            var x = (float)(rng.NextDouble() - 0.5) * 1;
-            var y = (float)(rng.NextDouble() - 0.5) * 1;
+            var x = (float)(rng.NextDouble() * 0.03) * 1;
+            var y = (float)(rng.NextDouble() * 0.03) * 1;
             var result = new Vector2(x, y);
             Velocity = result;
             observers = new List<IObserver<int>>();
@@ -45,28 +48,42 @@ namespace TPW.Dane
         {
             while (true)
             {
-                Position = GetNextPosition();
+     
+               Timer.Restart();
+               Timer.Start();
+                Position = GetNextPosition(Timer.ElapsedMilliseconds);
+               BallLog();
 
-                
                 foreach (var observer in observers.ToList())
                 {
 
                     if (observer != null)
                     {
-                        
                         observer.OnNext(id);
                     }
                 }
-                System.Threading.Thread.Sleep(1);
+               Timer.Stop();
 
             }
         }
-        private Vector2 GetNextPosition()
+
+        public void BallLog()
         {
-            
-            Vector2 newPosition = Position + Velocity;
-            Vector2 newPosition2 = Velocity;
-            return Position + newPosition2;
+            logger.log(this);
+        }
+        private Vector2 GetNextPosition(long timeInMs)
+        {
+            Vector2 newPosition;
+
+            if (timeInMs > 0)
+            {
+                newPosition = Position + Velocity * timeInMs;
+            }
+            else
+            {
+                newPosition = Position + Velocity ;
+            }
+            return newPosition;
         }
 
 
