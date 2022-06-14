@@ -25,13 +25,13 @@ namespace TestProject1
             Collisions collisions = new Collisions(position, velocity, 40);
             logicApi.AddBalls(2);
             Assert.IsTrue(collisions.IsCollision(position2, 30, true));
-           
+
         }
 
-	
 
-	}
-    
+
+    }
+
 }
 
 

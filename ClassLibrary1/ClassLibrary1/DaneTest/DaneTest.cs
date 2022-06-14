@@ -1,4 +1,6 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System.Numerics;
+using System.Threading;
 using TPW.Dane;
 
 namespace DaneTest
@@ -17,9 +19,9 @@ namespace DaneTest
         {
             api.CreateBalls(1);
             Assert.AreEqual(1, api.GetBallsCount());
-            var startPosition = api.GetPositionBall(1);
-            
-            Assert.AreNotEqual(startPosition, api.GetPositionBall(1));
+            Vector2 vector2 = new Vector2(1, 1);
+            api.SetBallSpeed(1, vector2);
+            Assert.AreEqual(vector2, api.GetVelocityBall(1));
         }
     }
 
